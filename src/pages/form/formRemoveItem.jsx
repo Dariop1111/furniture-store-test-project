@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ItemListing from "../itemListing";
+import ItemListing from "../../components/itemListing";
 import { observer } from "mobx-react";
 @observer
 class FormRemoveItem extends Component {
@@ -59,10 +59,11 @@ class FormRemoveItem extends Component {
 						return (
 							<ItemListing
 								key={item.id}
-								category={categories[item.category]}
+								category={categories.find((category) => {
+									return category.id === item.category;
+								})}
 								item={item}
 								onItemCheck={this.props.onItemCheck}
-								onEdit={this.props.onEdit}
 							/>
 						);
 					})}

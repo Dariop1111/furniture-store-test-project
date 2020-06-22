@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import CategoryListing from "../categoryListing";
+import CategoryListing from "../../components/categoryListing";
 @observer
 class FormRemoveCategory extends Component {
 	render() {

@@ -6,7 +6,7 @@ class ItemCheckbox extends Component {
 			<input
 				type="checkbox"
 				id={"item-checkbox-" + this.props.item.id}
-				defaultChecked={this.props.item.checked}
+				defaultChecked={this.props.item.checked === "true" ? true : false}
 				onClick={() => this.props.onItemCheck(this.props.item.id)}
 			></input>
 		);

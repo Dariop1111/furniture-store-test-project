@@ -8,7 +8,7 @@ class HomeCategory extends Component {
 				id={"home-category-" + category.id}
 				className="home-category"
 				onClick={() => {
-					this.props.onSelectCategory(category.name);
+					this.props.onSelectCategory(category.id);
 					this.props.onChangePage(1);
 				}}
 			>

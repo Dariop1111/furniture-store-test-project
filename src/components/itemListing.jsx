@@ -11,13 +11,10 @@ class ItemListing extends Component {
 						key={item.id}
 						item={item}
 						onItemCheck={this.props.onItemCheck}
-					/>
-					#{item.id} {item.name} {category.name} {item.size} {item.price}kn{" "}
-					{item.desc}
+					/>{" "}
+					{item.name} {category.name} {item.size} {item.price}kn {item.desc}{" "}
+					{item.checked}
 				</label>
-				<button type="button" onClick={() => this.props.onEdit(item)}>
-					Edit
-				</button>
 			</div>
 		);
 	}

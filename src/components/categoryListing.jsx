@@ -14,10 +14,10 @@ class CategoryListing extends Component {
 				<label
 					htmlFor={"categoryRemove-" + category.id}
 					onClick={() => {
-						this.props.onSelectCategory(category.name);
+						this.props.onSelectCategory(category.id);
 					}}
 				>
-					#{category.id} {category.name}
+					{category.name}
 				</label>
 			</p>
 		);

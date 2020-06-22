@@ -1,32 +1,28 @@
-let startID = 9;
 export default class ItemClass {
 	constructor(
 		name,
-		categoryID = 0,
+		categoryID,
 		itemWidth = "",
 		itemLength = "",
 		itemHeight = "",
-		price = 0,
+		price = "0",
 		desc = "",
-		checked = false,
-		feat = false
+		checked = "false",
+		feat = "false"
 	) {
-		this.id = this.getID();
+		this.id = "";
+		this.desc = desc;
+		this.feat = feat;
 		this.name = name;
-		this.itemWidth = itemWidth;
-		this.itemLength = itemLength;
-		this.itemHeight = itemHeight;
 		this.size =
 			itemWidth != "" && itemLength != "" && itemHeight != ""
 				? itemWidth + "cm x " + itemLength + "cm x " + itemHeight + "cm"
 				: "";
-		this.category = categoryID;
-		this.checked = checked;
-		this.feat = feat;
 		this.price = price;
-		this.desc = desc;
-	}
-	getID() {
-		return startID++;
+		this.checked = checked;
+		this.category = categoryID;
+		this.itemWidth = itemWidth;
+		this.itemHeight = itemHeight;
+		this.itemLength = itemLength;
 	}
 }

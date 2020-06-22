@@ -6,7 +6,7 @@ class CategoryCheckbox extends Component {
 			<input
 				type="checkbox"
 				id={"checkbox" + this.props.category.id}
-				defaultChecked={this.props.category.checked}
+				defaultChecked={this.props.category.checked === "true" ? true : false}
 				onClick={() => this.props.onCategoryCheck(this.props.category.id)}
 			></input>
 		);

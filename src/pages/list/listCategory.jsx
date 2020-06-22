@@ -8,7 +8,7 @@ class ListCategory extends Component {
 				id={"list-category-" + category.id}
 				className="list-category"
 				onClick={() => {
-					this.props.onSelectCategory(category.name);
+					this.props.onSelectCategory(category.id);
 				}}
 			>
 				<h3>{category.name}</h3>

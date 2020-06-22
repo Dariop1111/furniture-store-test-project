@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import ItemBox from "../itemBox";
+import ItemBox from "../../components/itemBox";
 import HomeCategory from "./homeCategory";
-
+import store from "../../stores/homeStore.js";
+import { observer } from "mobx-react";
+import FormTest from "./formTest";
+@observer
 class Home extends Component {
 	render() {
-		let items = this.props.items;
-		let categories = this.props.categories;
+		let { items, categories } = store;
+
 		return (
 			<div id="home">
 				<div id="home-feat">
