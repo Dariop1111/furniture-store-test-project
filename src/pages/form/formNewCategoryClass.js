@@ -7,6 +7,7 @@ import listStore from "../../stores/listStore";
 import homeStore from "../../stores/homeStore";
 
 import CategoryClass from "../../classes/categoryClass.js";
+import { getCategories, getAccessToken } from "../../stores/getData";
 export default class MyForm extends Form {
 	/*
     Below we are returning a `plugins` object using the `validatorjs` package
@@ -75,7 +76,7 @@ export default class MyForm extends Form {
 		let categoriesURL =
 			"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
 		if (category) {
-			let accessToken = await this.getAccessToken();
+			let accessToken = await getAccessToken();
 			await fetch(categoriesURL, {
 				method: "POST",
 				headers: {
@@ -84,52 +85,7 @@ export default class MyForm extends Form {
 				},
 				body: category,
 			});
-			this.updateAllStores();
+			getCategories(formStore);
 		}
-	};
-	//Gets access token
-	async getAccessToken() {
-		let proxyURL = "https://cors-anywhere.herokuapp.com/";
-		let loginURL = `https://api.baasic.com/beta/furniture-store-app/login/`;
-		let body = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded",
-				"Content-Length": "0",
-			},
-			body: "grant_type=password&username=Dariop1111&password=m@rinmiki1",
-		};
-		let response = await fetch(proxyURL + loginURL, body);
-		let data = await response.json();
-		data.access_token;
-		return data.access_token;
-	}
-	// Updates given store
-	updateStore(store) {
-		let itemsURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Items";
-		let categoriesURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
-		fetch(itemsURL)
-			.then((response) => response.json())
-			.then((data) => {
-				store.items = data.item;
-			})
-			.catch(() => {
-				store.items = [];
-			});
-		fetch(categoriesURL)
-			.then((response) => response.json())
-			.then((data) => {
-				store.categories = data.item;
-			})
-			.catch(() => {
-				store.categories = [];
-			});
-	}
-	updateAllStores = () => {
-		this.updateStore(formStore);
-		this.updateStore(listStore);
-		this.updateStore(homeStore);
 	};
 }

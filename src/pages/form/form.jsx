@@ -15,6 +15,7 @@ let formItem = new FormItem();
 let formCategory = new FormCategory();
 //Classes
 import ItemClass from "../../classes/itemClass";
+import { getItems, getCategories, getAccessToken } from "../../stores/getData";
 @observer
 class Form extends Component {
 	render() {
@@ -34,15 +35,14 @@ class Form extends Component {
 				</div>
 				<div id="form-remove">
 					<FormRemoveCategory
-						categories={categories}
+						store={store}
 						onCategoryCheck={this.handleCategoryCheck}
 						onDeleteCategory={this.handleDeleteCheckedCategory}
 						onSelectCategory={this.props.onSelectCategory}
 					/>
 					<div id="form-remove-item">
 						<FormRemoveItem
-							items={trimmedItems}
-							categories={categories}
+							store={store}
 							inputValues={this.props.inputValues}
 							onInputValue={this.props.onInputValue}
 							onDeleteItem={this.handleDeleteCheckedItems}
@@ -71,6 +71,7 @@ class Form extends Component {
 		} else {
 			store.itemPage = buttonTxt;
 		}
+		getItems(store);
 	};
 
 	resetCategoryForm = () => {
@@ -109,7 +110,7 @@ class Form extends Component {
 	handleDeleteCheckedItems = async () => {
 		let itemsURL =
 			"https://api.baasic.com/beta/furniture-store-app/resources/Items";
-		let accessToken = await this.getAccessToken();
+		let accessToken = await getAccessToken();
 		for await (let item of store.items) {
 			if (item.checked === "true") {
 				let itemURL = itemsURL + `/${item.id}`;
@@ -122,14 +123,14 @@ class Form extends Component {
 					},
 				});
 			}
-			this.updateAllStores();
+			getItems(store);
 		}
 	};
 	//Delete cheked categories
 	handleDeleteCheckedCategory = async () => {
 		let categoriesURL =
 			"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
-		let accessToken = await this.getAccessToken();
+		let accessToken = await getAccessToken();
 		for await (let category of store.categories) {
 			if (category.checked === "true") {
 				let categoryURL = categoriesURL + `/${category.id}`;
@@ -140,54 +141,9 @@ class Form extends Component {
 						"Content-Type": "application/json",
 					},
 				});
-				this.updateAllStores();
+				getCategories(store);
 			}
 		}
-	};
-	//Gets access token
-	async getAccessToken() {
-		let proxyURL = "https://cors-anywhere.herokuapp.com/";
-		let loginURL = `https://api.baasic.com/beta/furniture-store-app/login/`;
-		let body = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded",
-				"Content-Length": "0",
-			},
-			body: "grant_type=password&username=Dariop1111&password=m@rinmiki1",
-		};
-		let response = await fetch(proxyURL + loginURL, body);
-		let data = await response.json();
-		data.access_token;
-		return data.access_token;
-	}
-	// Updates given store
-	updateStore(store) {
-		let itemsURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Items";
-		let categoriesURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
-		fetch(itemsURL)
-			.then((response) => response.json())
-			.then((data) => {
-				store.items = data.item;
-			})
-			.catch(() => {
-				store.items = [];
-			});
-		fetch(categoriesURL)
-			.then((response) => response.json())
-			.then((data) => {
-				store.categories = data.item;
-			})
-			.catch(() => {
-				store.categories = [];
-			});
-	}
-	updateAllStores = () => {
-		this.updateStore(store);
-		this.updateStore(listStore);
-		this.updateStore(homeStore);
 	};
 }
 

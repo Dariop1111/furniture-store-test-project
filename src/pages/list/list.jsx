@@ -3,7 +3,7 @@ import ItemBox from "../../components/itemBox";
 import ListCategory from "./listCategory.jsx";
 import ListToolbar from "./listToolbar.jsx";
 import ItemPagination from "../../components/itemPagination.jsx";
-
+import { getItems } from "../../stores/getData";
 import store from "../../stores/listStore.js";
 import { observer } from "mobx-react";
 @observer
@@ -20,7 +20,10 @@ class List extends Component {
 								<ListCategory
 									key={category.id}
 									category={category}
-									onSelectCategory={this.props.onSelectCategory}
+									onSelectCategory={(e) => {
+										this.props.onSelectCategory(e);
+										getItems(store);
+									}}
 								/>
 							);
 						})}
@@ -29,6 +32,7 @@ class List extends Component {
 				<div id="col-2">
 					<div id="list-toolbar">
 						<ListToolbar
+							store={store}
 							inputValues={this.props.inputValues}
 							onInputValue={this.props.onInputValue}
 						/>
@@ -63,6 +67,7 @@ class List extends Component {
 		} else {
 			store.itemPage = buttonTxt;
 		}
+		getItems(store);
 	};
 	updateStore(store) {
 		let itemsURL =

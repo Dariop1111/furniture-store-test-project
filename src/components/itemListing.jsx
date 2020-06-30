@@ -4,6 +4,7 @@ class ItemListing extends Component {
 	render() {
 		let item = this.props.item;
 		let category = this.props.category;
+
 		return (
 			<div key={item.id} className="item-listing">
 				<label key={item.id} htmlFor={"item-checkbox-" + this.props.item.id}>

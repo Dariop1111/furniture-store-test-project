@@ -1,27 +1,20 @@
-import { observable } from "mobx";
+import { computed, observable } from "mobx";
+import { getItems, getCategories } from "./getData";
 class HomeStore {
 	@observable items = [];
 	@observable categories = [];
+	@computed get itemsUrlOptions() {
+		return "?searchQuery=true";
+	}
+	@computed get itemsURL() {
+		return (
+			"https://api.baasic.com/beta/furniture-store-app/resources/Items/" +
+			this.itemsUrlOptions
+		);
+	}
 }
 let homeStore = new HomeStore();
-let url = "https://api.baasic.com/beta/furniture-store-app/resources/Items";
-let categoriesURL =
-	"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
-fetch(url)
-	.then((response) => response.json())
-	.then((data) => {
-		homeStore.items = data.item;
-	})
-	.catch(() => {
-		homeStore.items = [];
-	});
-fetch(categoriesURL)
-	.then((response) => response.json())
-	.then((data) => {
-		homeStore.categories = data.item;
-	})
-	.catch(() => {
-		homeStore.categories = [];
-	});
+getItems(homeStore);
+getCategories(homeStore);
 
 export default homeStore;

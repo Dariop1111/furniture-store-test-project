@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { getItems } from "../../stores/getData";
 class ListToolbar extends Component {
 	render() {
 		let { search } = this.props.inputValues;
@@ -15,33 +16,23 @@ class ListToolbar extends Component {
 					type="button"
 					name="sortBy"
 					value="abc"
-					onClick={this.props.onInputValue}
+					onClick={(e) => {
+						this.props.onInputValue(e);
+						getItems(this.props.store);
+					}}
 				>
 					Sort alphabetically
 				</button>
 				<button
 					type="button"
 					name="sortBy"
-					value="cba"
-					onClick={this.props.onInputValue}
+					value="price"
+					onClick={(e) => {
+						this.props.onInputValue(e);
+						getItems(this.props.store);
+					}}
 				>
-					Sort reverse alphabetically
-				</button>
-				<button
-					type="button"
-					name="sortBy"
-					value="priceMax"
-					onClick={this.props.onInputValue}
-				>
-					Sort by max price
-				</button>
-				<button
-					type="button"
-					name="sortBy"
-					value="priceMin"
-					onClick={this.props.onInputValue}
-				>
-					Sort by min price
+					Sort by price
 				</button>
 			</form>
 		);

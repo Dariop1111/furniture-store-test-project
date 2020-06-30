@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import CategoryListing from "../../components/categoryListing";
+import { getItems } from "../../stores/getData";
 @observer
 class FormRemoveCategory extends Component {
 	render() {
-		let categories = this.props.categories;
+		let { categories } = this.props.store;
 		return (
 			<div id="form-remove-category">
 				<button type="button" onClick={this.props.onDeleteCategory}>
@@ -15,7 +16,10 @@ class FormRemoveCategory extends Component {
 						<CategoryListing
 							key={category.id}
 							category={category}
-							onSelectCategory={this.props.onSelectCategory}
+							onSelectCategory={(e) => {
+								this.props.onSelectCategory(e);
+								getItems(this.props.store);
+							}}
 							onCategoryCheck={this.props.onCategoryCheck}
 						/>
 					);

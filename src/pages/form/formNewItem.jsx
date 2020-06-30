@@ -31,9 +31,10 @@ class FormNewItem extends Component {
 				<input {...form.$("itemDesc").bind()} />
 
 				<h4>Choose item Category</h4>
-				{categories.map((category) => {
+				{categories.map((category, index) => {
 					return (
 						<NewItemCategory
+							key={index}
 							category={category}
 							inputValues={this.props.inputValues}
 							onInputValue={this.props.onInputValue}
