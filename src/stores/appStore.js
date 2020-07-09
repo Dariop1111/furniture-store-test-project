@@ -25,5 +25,4 @@ class AppStore {
 }
 
 let appStore = new AppStore();
-export let store = appStore;
 export default appStore;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getItems } from "../../stores/getData";
+import getData from "../../http/getData";
 class ListToolbar extends Component {
 	render() {
 		let { search } = this.props.inputValues;
@@ -29,7 +29,7 @@ class ListToolbar extends Component {
 					value="price"
 					onClick={(e) => {
 						this.props.onInputValue(e);
-						getItems(this.props.store);
+						getData.getItems(this.props.store);
 					}}
 				>
 					Sort by price

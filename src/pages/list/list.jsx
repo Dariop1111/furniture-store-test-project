@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import ItemBox from "../../components/itemBox";
+import { observer } from "mobx-react";
+
+import { ItemBox, ItemPagination } from "../../components";
+import { getData } from "../../http";
+import store from "../../stores/listStore.js";
+
 import ListCategory from "./listCategory.jsx";
 import ListToolbar from "./listToolbar.jsx";
-import ItemPagination from "../../components/itemPagination.jsx";
-import { getItems } from "../../stores/getData";
-import store from "../../stores/listStore.js";
-import { observer } from "mobx-react";
 @observer
 class List extends Component {
 	render() {
@@ -67,30 +68,8 @@ class List extends Component {
 		} else {
 			store.itemPage = buttonTxt;
 		}
-		getItems(store);
+		getData.getItems(store);
 	};
-	updateStore(store) {
-		let itemsURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Items";
-		let categoriesURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
-		fetch(itemsURL)
-			.then((response) => response.json())
-			.then((data) => {
-				store.items = data.item;
-			})
-			.catch(() => {
-				store.items = [];
-			});
-		fetch(categoriesURL)
-			.then((response) => response.json())
-			.then((data) => {
-				store.categories = data.item;
-			})
-			.catch(() => {
-				store.categories = [];
-			});
-	}
 }
 
 export default List;

@@ -1,26 +1,26 @@
 import React, { Component } from "react";
-import FormNewCategory from "./formNewCategory";
-import FormNewItem from "./formNewItem";
-import FormRemoveItem from "./formRemoveItem";
-import FormRemoveCategory from "./formRemoveCategory";
-import ItemPagination from "../../components/itemPagination.jsx";
-
-import store from "../../stores/formStore";
-import listStore from "../../stores/listStore";
-import homeStore from "../../stores/homeStore";
 import { observer } from "mobx-react";
+
+import { ItemPagination } from "../../components";
+import {
+	FormNewCategory,
+	FormNewItem,
+	FormRemoveItem,
+	FormRemoveCategory,
+} from "./components";
+import { getData, deleteData } from "../../http";
+import store from "../../stores/formStore";
+
 import FormItem from "./formNewItemClass";
 import FormCategory from "./formNewCategoryClass";
 let formItem = new FormItem();
 let formCategory = new FormCategory();
 //Classes
-import ItemClass from "../../classes/itemClass";
-import { getItems, getCategories, getAccessToken } from "../../stores/getData";
 @observer
 class Form extends Component {
 	render() {
 		let { itemBoxPagination, categories } = store;
-		let { trimmedItems, itemPages, itemPage } = itemBoxPagination;
+		let { itemPages, itemPage } = itemBoxPagination;
 		return (
 			<div id="form">
 				<div id="form-add">
@@ -71,7 +71,7 @@ class Form extends Component {
 		} else {
 			store.itemPage = buttonTxt;
 		}
-		getItems(store);
+		getData.getItems(store);¸¸
 	};
 
 	resetCategoryForm = () => {
@@ -110,38 +110,24 @@ class Form extends Component {
 	handleDeleteCheckedItems = async () => {
 		let itemsURL =
 			"https://api.baasic.com/beta/furniture-store-app/resources/Items";
-		let accessToken = await getAccessToken();
 		for await (let item of store.items) {
+			console.log(item.checked);
 			if (item.checked === "true") {
 				let itemURL = itemsURL + `/${item.id}`;
-				console.log(item.checked);
-				fetch(itemURL, {
-					method: "DELETE",
-					headers: {
-						Authorization: `bearer ${accessToken}`,
-						"Content-Type": "application/json",
-					},
-				});
+				await deleteData.deleteItem(itemURL);
+				await getData.getItems(store);
 			}
-			getItems(store);
 		}
 	};
 	//Delete cheked categories
 	handleDeleteCheckedCategory = async () => {
 		let categoriesURL =
 			"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
-		let accessToken = await getAccessToken();
 		for await (let category of store.categories) {
 			if (category.checked === "true") {
 				let categoryURL = categoriesURL + `/${category.id}`;
-				fetch(categoryURL, {
-					method: "DELETE",
-					headers: {
-						Authorization: `bearer ${accessToken}`,
-						"Content-Type": "application/json",
-					},
-				});
-				getCategories(store);
+				await deleteData.deleteCategory(categoryURL);
+				await getData.getCategories(store);
 			}
 		}
 	};

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import ItemBox from "../../components/itemBox";
-import HomeCategory from "./homeCategory";
-import store from "../../stores/homeStore.js";
 import { observer } from "mobx-react";
-import FormTest from "./formTest";
+
+import { ItemBox } from "../../components";
+import store from "../../stores/homeStore.js";
+
+import HomeCategory from "./homeCategory";
 @observer
 class Home extends Component {
 	render() {

@@ -1,12 +1,10 @@
 import { Form } from "mobx-react-form";
 import dvr from "mobx-react-form/lib/validators/DVR";
 import validatorjs from "validatorjs";
-import store from "../../stores/appStore";
-import formStore from "../../stores/formStore";
-import listStore from "../../stores/listStore";
-import homeStore from "../../stores/homeStore";
+
+import { appStore, formStore } from "../../stores";
 import ItemClass from "../../classes/itemClass";
-import { getItems, getAccessToken } from "../../stores/getData";
+import { getData, postData } from "../../http";
 
 export default class MyForm extends Form {
 	/*
@@ -74,12 +72,11 @@ export default class MyForm extends Form {
       */
 			onSuccess(form) {
 				form.fields.forEach((input) => {
-					store.inputValues[input.name] = input.value;
+					appStore.inputValues[input.name] = input.value;
 				});
-				console.log(store.inputValues["itemPrice"]);
 				this.handleAddNewItem();
 				form.fields.forEach((input) => {
-					store.inputValues[input.name] = "";
+					appStore.inputValues[input.name] = "";
 				});
 			},
 			/*
@@ -92,13 +89,13 @@ export default class MyForm extends Form {
 	}
 	//Adding items
 	handleAddNewItem = () => {
-		let name = store.inputValues["itemName"];
-		let categoryID = store.inputValues["itemCategoryID"];
-		let itemWidth = store.inputValues["itemWidth"];
-		let itemLength = store.inputValues["itemLength"];
-		let itemHeight = store.inputValues["itemHeight"];
-		let price = store.inputValues["itemPrice"];
-		let desc = store.inputValues["itemDesc"];
+		let name = appStore.inputValues["itemName"];
+		let categoryID = appStore.inputValues["itemCategoryID"];
+		let itemWidth = appStore.inputValues["itemWidth"];
+		let itemLength = appStore.inputValues["itemLength"];
+		let itemHeight = appStore.inputValues["itemHeight"];
+		let price = appStore.inputValues["itemPrice"];
+		let desc = appStore.inputValues["itemDesc"];
 		let item;
 
 		if (
@@ -109,7 +106,6 @@ export default class MyForm extends Form {
 			price != "" &&
 			desc != ""
 		) {
-			console.log(price != "");
 			item = new ItemClass(
 				name,
 				categoryID,
@@ -124,26 +120,7 @@ export default class MyForm extends Form {
 		else if (categoryID != "" && price != "")
 			item = new ItemClass(name, categoryID, "", "", "", price);
 		else if (categoryID != "") item = new ItemClass(name, categoryID);
-		console.log(item.price);
-		this.sendNewItemToDB(item);
-	};
-	//Sends new item to database
-	sendNewItemToDB = async (item) => {
-		item = JSON.stringify(item);
-		let itemsURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Items";
-		if (item) {
-			let accessToken = await getAccessToken();
-			await fetch(itemsURL, {
-				method: "POST",
-
-				headers: {
-					Authorization: `bearer ${accessToken}`,
-					"Content-Type": "application/json",
-				},
-				body: item,
-			});
-			getItems(formStore);
-		}
+		postData.postItem(item);
+		getData.getItems(formStore);
 	};
 }

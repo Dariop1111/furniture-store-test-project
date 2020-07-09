@@ -1,13 +1,10 @@
 import { Form } from "mobx-react-form";
 import dvr from "mobx-react-form/lib/validators/DVR";
 import validatorjs from "validatorjs";
-import store from "../../stores/appStore";
-import formStore from "../../stores/formStore";
-import listStore from "../../stores/listStore";
-import homeStore from "../../stores/homeStore";
 
 import CategoryClass from "../../classes/categoryClass.js";
-import { getCategories, getAccessToken } from "../../stores/getData";
+import { postData, getData } from "../../http";
+import { appStore, formStore } from "../../stores";
 export default class MyForm extends Form {
 	/*
     Below we are returning a `plugins` object using the `validatorjs` package
@@ -46,11 +43,11 @@ export default class MyForm extends Form {
       */
 			onSuccess(form) {
 				form.fields.forEach((input) => {
-					store.inputValues[input.name] = input.value;
+					appStore.inputValues[input.name] = input.value;
 				});
 				this.handleAddNewCategory();
 				form.fields.forEach((input) => {
-					store.inputValues[input.name] = "";
+					appStore.inputValues[input.name] = "";
 				});
 			},
 			/*
@@ -64,28 +61,11 @@ export default class MyForm extends Form {
 
 	//Adding Categories
 	handleAddNewCategory = () => {
-		let name = store.inputValues["categoryName"];
+		let name = appStore.inputValues["categoryName"];
 		if (name != "") {
 			let category = new CategoryClass(name);
-			this.sendNewCategoryToDB(category);
-		}
-	};
-	//Sends new category to database
-	sendNewCategoryToDB = async (category) => {
-		category = JSON.stringify(category);
-		let categoriesURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
-		if (category) {
-			let accessToken = await getAccessToken();
-			await fetch(categoriesURL, {
-				method: "POST",
-				headers: {
-					Authorization: `bearer ${accessToken}`,
-					"Content-Type": "application/json",
-				},
-				body: category,
-			});
-			getCategories(formStore);
+			postData.postCategory(category);
+			getData.getCategories(formStore);
 		}
 	};
 }

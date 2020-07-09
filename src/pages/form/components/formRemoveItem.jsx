@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import ItemListing from "../../components/itemListing";
+import ItemListing from "../../../components/itemListing";
 import { observer } from "mobx-react";
-import { getItems } from "../../stores/getData";
+import getData from "../../../http/getData";
 @observer
 class FormRemoveItem extends Component {
 	render() {
@@ -26,7 +26,7 @@ class FormRemoveItem extends Component {
 						value="abc"
 						onClick={(e) => {
 							this.props.onInputValue(e);
-							getItems(this.props.store);
+							getData.getItems(this.props.store);
 						}}
 					>
 						Sort alphabetically
@@ -37,7 +37,7 @@ class FormRemoveItem extends Component {
 						value="price"
 						onClick={(e) => {
 							this.props.onInputValue(e);
-							getItems(this.props.store);
+							getData.getItems(this.props.store);
 						}}
 					>
 						Sort by price

@@ -6,9 +6,7 @@ import "./assets/style.css";
 import { observer } from "mobx-react";
 //Components
 import Header from "./components/header/header";
-import Home from "./pages/home/home";
-import List from "./pages/list/list";
-import Form from "./pages/form/form";
+import { Home, List, Form } from "./pages";
 @observer
 class App extends Component {
 	constructor(props) {
