@@ -2,9 +2,8 @@ import { Form } from "mobx-react-form";
 import dvr from "mobx-react-form/lib/validators/DVR";
 import validatorjs from "validatorjs";
 
-import { appStore, formStore } from "../../stores";
-import ItemClass from "../../classes/itemClass";
-import { getData, postData } from "../../http";
+import { appStore } from "../../stores";
+import { item } from "../../classes";
 
 export default class MyForm extends Form {
 	/*
@@ -74,7 +73,7 @@ export default class MyForm extends Form {
 				form.fields.forEach((input) => {
 					appStore.inputValues[input.name] = input.value;
 				});
-				this.handleAddNewItem();
+				item.addNew();
 				form.fields.forEach((input) => {
 					appStore.inputValues[input.name] = "";
 				});
@@ -87,40 +86,4 @@ export default class MyForm extends Form {
 			},
 		};
 	}
-	//Adding items
-	handleAddNewItem = () => {
-		let name = appStore.inputValues["itemName"];
-		let categoryID = appStore.inputValues["itemCategoryID"];
-		let itemWidth = appStore.inputValues["itemWidth"];
-		let itemLength = appStore.inputValues["itemLength"];
-		let itemHeight = appStore.inputValues["itemHeight"];
-		let price = appStore.inputValues["itemPrice"];
-		let desc = appStore.inputValues["itemDesc"];
-		let item;
-
-		if (
-			categoryID != "" &&
-			itemWidth != "" &&
-			itemLength != "" &&
-			itemHeight != "" &&
-			price != "" &&
-			desc != ""
-		) {
-			item = new ItemClass(
-				name,
-				categoryID,
-				itemWidth,
-				itemLength,
-				itemHeight,
-				price,
-				desc
-			);
-		} else if (categoryID != "" && price != "" && desc != "")
-			item = new ItemClass(name, categoryID, "", "", "", price, desc);
-		else if (categoryID != "" && price != "")
-			item = new ItemClass(name, categoryID, "", "", "", price);
-		else if (categoryID != "") item = new ItemClass(name, categoryID);
-		postData.postItem(item);
-		getData.getItems(formStore);
-	};
 }

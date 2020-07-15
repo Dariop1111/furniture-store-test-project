@@ -23,7 +23,7 @@ class List extends Component {
 									category={category}
 									onSelectCategory={(e) => {
 										this.props.onSelectCategory(e);
-										getItems(store);
+										getData.getItems(store);
 									}}
 								/>
 							);

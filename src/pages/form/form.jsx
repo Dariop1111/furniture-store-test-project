@@ -8,8 +8,9 @@ import {
 	FormRemoveItem,
 	FormRemoveCategory,
 } from "./components";
-import { getData, deleteData } from "../../http";
+import { getData } from "../../http";
 import store from "../../stores/formStore";
+import { item, category } from "../../classes";
 
 import FormItem from "./formNewItemClass";
 import FormCategory from "./formNewCategoryClass";
@@ -36,8 +37,8 @@ class Form extends Component {
 				<div id="form-remove">
 					<FormRemoveCategory
 						store={store}
-						onCategoryCheck={this.handleCategoryCheck}
-						onDeleteCategory={this.handleDeleteCheckedCategory}
+						onCategoryCheck={category.check}
+						onDeleteCategory={category.deleteChecked}
 						onSelectCategory={this.props.onSelectCategory}
 					/>
 					<div id="form-remove-item">
@@ -45,8 +46,8 @@ class Form extends Component {
 							store={store}
 							inputValues={this.props.inputValues}
 							onInputValue={this.props.onInputValue}
-							onDeleteItem={this.handleDeleteCheckedItems}
-							onItemCheck={this.handleItemCheck}
+							onDeleteItem={item.deleteChecked}
+							onItemCheck={item.check}
 						/>
 						<ItemPagination
 							itemPages={itemPages}
@@ -71,65 +72,7 @@ class Form extends Component {
 		} else {
 			store.itemPage = buttonTxt;
 		}
-		getData.getItems(store);¸¸
-	};
-
-	resetCategoryForm = () => {
-		this.props.inputValues["categoryName"] = "";
-	};
-	//Checking or unchecking items
-	handleItemCheck = (id) => {
-		store.items = store.items.map((item) => {
-			item.checked =
-				id === item.id
-					? item.checked === "true"
-						? "false"
-						: "true"
-					: item.checked;
-			return item;
-		});
-	};
-	//Checking or unchecking categories
-	handleCategoryCheck = (id) => {
-		store.numOfItems();
-		store.categories = store.categories.map((category) => {
-			category.checked =
-				id === category.id && category.numOfItems === 0
-					? category.checked === "true"
-						? "false"
-						: "true"
-					: category.checked;
-			return category;
-		});
-	};
-	handleCheck = (checkName) => {
-		this.props.inputValues[checkName] = !this.props.inputValues[checkName];
-	};
-
-	//Deleting checked items
-	handleDeleteCheckedItems = async () => {
-		let itemsURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Items";
-		for await (let item of store.items) {
-			console.log(item.checked);
-			if (item.checked === "true") {
-				let itemURL = itemsURL + `/${item.id}`;
-				await deleteData.deleteItem(itemURL);
-				await getData.getItems(store);
-			}
-		}
-	};
-	//Delete cheked categories
-	handleDeleteCheckedCategory = async () => {
-		let categoriesURL =
-			"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
-		for await (let category of store.categories) {
-			if (category.checked === "true") {
-				let categoryURL = categoriesURL + `/${category.id}`;
-				await deleteData.deleteCategory(categoryURL);
-				await getData.getCategories(store);
-			}
-		}
+		getData.getItems(store);
 	};
 }
 

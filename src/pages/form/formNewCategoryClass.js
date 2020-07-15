@@ -2,9 +2,8 @@ import { Form } from "mobx-react-form";
 import dvr from "mobx-react-form/lib/validators/DVR";
 import validatorjs from "validatorjs";
 
-import CategoryClass from "../../classes/categoryClass.js";
-import { postData, getData } from "../../http";
-import { appStore, formStore } from "../../stores";
+import { appStore } from "../../stores";
+import { category } from "../../classes";
 export default class MyForm extends Form {
 	/*
     Below we are returning a `plugins` object using the `validatorjs` package
@@ -45,7 +44,7 @@ export default class MyForm extends Form {
 				form.fields.forEach((input) => {
 					appStore.inputValues[input.name] = input.value;
 				});
-				this.handleAddNewCategory();
+				category.addNew();
 				form.fields.forEach((input) => {
 					appStore.inputValues[input.name] = "";
 				});
@@ -58,14 +57,4 @@ export default class MyForm extends Form {
 			},
 		};
 	}
-
-	//Adding Categories
-	handleAddNewCategory = () => {
-		let name = appStore.inputValues["categoryName"];
-		if (name != "") {
-			let category = new CategoryClass(name);
-			postData.postCategory(category);
-			getData.getCategories(formStore);
-		}
-	};
 }

@@ -6,7 +6,7 @@ class Header extends Component {
 			<div id="header">
 				<div id="header-logo">
 					<img
-						src={require("../../images/kitchen-store-logo.png")}
+						src={require("../../assets/images/kitchen-store-logo.png")}
 						onClick={() => this.props.onChangePage(0)}
 					></img>
 				</div>
