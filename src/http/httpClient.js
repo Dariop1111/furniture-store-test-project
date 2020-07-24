@@ -54,5 +54,40 @@ class HttpClient {
 			},
 		});
 	}
+	// get Data
+	getItems = async (store) => {
+		let data = await this.get(store.itemsURL, {});
+		store.items = data.item;
+		store.itemPages = Math.ceil(data.totalRecords / data.recordsPerPage);
+	};
+
+	getCategories = async (store) => {
+		let data = await this.get(store.categoriesURL, {});
+		store.categories = data.item;
+	};
+	// delete Data
+	deleteItem = async (itemURL) => {
+		this.delete(itemURL);
+	};
+	deleteCategory = async (categoryURL) => {
+		this.delete(categoryURL);
+	};
+	//post Data
+	postItem = async (item) => {
+		item = JSON.stringify(item);
+		let itemsURL =
+			"https://api.baasic.com/beta/furniture-store-app/resources/Items";
+		if (item) {
+			this.post(itemsURL, item);
+		}
+	};
+	postCategory = async (category) => {
+		category = JSON.stringify(category);
+		let categoriesURL =
+			"https://api.baasic.com/beta/furniture-store-app/resources/Categories";
+		if (category) {
+			this.post(categoriesURL, category);
+		}
+	};
 }
 export default new HttpClient();

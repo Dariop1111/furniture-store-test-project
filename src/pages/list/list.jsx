@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 
 import { ItemBox, ItemPagination } from "../../components";
-import { getData } from "../../http";
+import { httpClient } from "../../http";
 import store from "../../stores/listStore.js";
 
 import ListCategory from "./listCategory.jsx";
@@ -23,7 +23,7 @@ class List extends Component {
 									category={category}
 									onSelectCategory={(e) => {
 										this.props.onSelectCategory(e);
-										getData.getItems(store);
+										httpClient.getItems(store);
 									}}
 								/>
 							);
@@ -68,7 +68,7 @@ class List extends Component {
 		} else {
 			store.itemPage = buttonTxt;
 		}
-		getData.getItems(store);
+		httpClient.getItems(store);
 	};
 }
 

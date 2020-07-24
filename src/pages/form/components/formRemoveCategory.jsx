@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import CategoryListing from "../../../components/categoryListing";
-import getData from "../../../http/getData";
+import { httpClient } from "../../../http";
 @observer
 class FormRemoveCategory extends Component {
 	render() {
@@ -18,7 +18,7 @@ class FormRemoveCategory extends Component {
 							category={category}
 							onSelectCategory={(e) => {
 								this.props.onSelectCategory(e);
-								getData.getItems(this.props.store);
+								httpClient.getItems(this.props.store);
 							}}
 							onCategoryCheck={this.props.onCategoryCheck}
 						/>

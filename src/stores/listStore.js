@@ -1,6 +1,6 @@
 import { observable, computed } from "mobx";
 import store from "./appStore";
-import getData from "../http/getData";
+import { httpClient } from "../http";
 class ListStore {
 	@observable items = [];
 	@observable categories = [];
@@ -81,6 +81,6 @@ class ListStore {
 }
 
 let listStore = new ListStore();
-getData.getItems(listStore);
-getData.getCategories(listStore);
+httpClient.getItems(listStore);
+httpClient.getCategories(listStore);
 export default listStore;

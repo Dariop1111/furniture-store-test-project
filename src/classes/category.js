@@ -1,5 +1,5 @@
 import CategoryClass from "./categoryClass";
-import { postData, getData, deleteData } from "../http";
+import { httpClient } from "../http";
 import { appStore, formStore } from "../stores";
 
 export default new (class Category {
@@ -7,8 +7,8 @@ export default new (class Category {
 		let name = appStore.inputValues["categoryName"];
 		if (name != "") {
 			let category = new CategoryClass(name);
-			postData.postCategory(category);
-			getData.getCategories(formStore);
+			httpClient.postCategory(category);
+			httpClient.getCategories(formStore);
 		}
 	};
 	check = (id) => {
@@ -29,8 +29,8 @@ export default new (class Category {
 		for await (let category of formStore.categories) {
 			if (category.checked === "true") {
 				let categoryURL = categoriesURL + `/${category.id}`;
-				await deleteData.deleteCategory(categoryURL);
-				await getData.getCategories(formStore);
+				await httpClient.deleteCategory(categoryURL);
+				await httpClient.getCategories(formStore);
 			}
 		}
 	};

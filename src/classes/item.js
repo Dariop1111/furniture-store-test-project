@@ -1,6 +1,6 @@
 import { appStore, formStore } from "../stores";
 import ItemClass from "./itemClass";
-import { getData, postData, deleteData } from "../http";
+import { httpClient } from "../http";
 
 export default new (class Item {
 	addNew = () => {
@@ -35,8 +35,8 @@ export default new (class Item {
 		else if (categoryID != "" && price != "")
 			item = new ItemClass(name, categoryID, "", "", "", price);
 		else if (categoryID != "") item = new ItemClass(name, categoryID);
-		postData.postItem(item);
-		getData.getItems(formStore);
+		httpClient.postItem(item);
+		httpClient.getItems(formStore);
 	};
 	check = (id) => {
 		formStore.items = formStore.items.map((item) => {
@@ -55,8 +55,8 @@ export default new (class Item {
 		for await (let item of formStore.items) {
 			if (item.checked === "true") {
 				let itemURL = itemsURL + `/${item.id}`;
-				await deleteData.deleteItem(itemURL);
-				await getData.getItems(formStore);
+				await httpClient.deleteItem(itemURL);
+				await httpClient.getItems(formStore);
 			}
 		}
 	};

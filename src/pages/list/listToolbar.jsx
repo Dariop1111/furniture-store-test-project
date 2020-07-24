@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import getData from "../../http/getData";
+import { httpClient } from "../../http";
 class ListToolbar extends Component {
 	render() {
 		let { search } = this.props.inputValues;
@@ -18,7 +18,7 @@ class ListToolbar extends Component {
 					value="abc"
 					onClick={(e) => {
 						this.props.onInputValue(e);
-						getItems(this.props.store);
+						httpClient.getItems(this.props.store);
 					}}
 				>
 					Sort alphabetically
@@ -29,7 +29,7 @@ class ListToolbar extends Component {
 					value="price"
 					onClick={(e) => {
 						this.props.onInputValue(e);
-						getData.getItems(this.props.store);
+						httpClient.getItems(this.props.store);
 					}}
 				>
 					Sort by price

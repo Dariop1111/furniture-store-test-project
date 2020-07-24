@@ -8,7 +8,7 @@ import {
 	FormRemoveItem,
 	FormRemoveCategory,
 } from "./components";
-import { getData } from "../../http";
+import { httpClient } from "../../http";
 import store from "../../stores/formStore";
 import { item, category } from "../../classes";
 
@@ -72,7 +72,7 @@ class Form extends Component {
 		} else {
 			store.itemPage = buttonTxt;
 		}
-		getData.getItems(store);
+		httpClient.getItems(store);
 	};
 }
 

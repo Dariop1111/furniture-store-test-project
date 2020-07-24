@@ -1,5 +1,5 @@
 import { computed, observable } from "mobx";
-import getData from "../http/getData";
+import { httpClient } from "../http";
 class HomeStore {
 	@observable items = [];
 	@observable categories = [];
@@ -14,7 +14,7 @@ class HomeStore {
 	}
 }
 let homeStore = new HomeStore();
-getData.getItems(homeStore);
-getData.getCategories(homeStore);
+httpClient.getItems(homeStore);
+httpClient.getCategories(homeStore);
 
 export default homeStore;

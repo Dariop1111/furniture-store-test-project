@@ -1,6 +1,6 @@
 import { observable, computed } from "mobx";
 import store from "./appStore";
-import getData from "../http/getData";
+import { httpClient } from "../http";
 class FormStore {
 	@observable items = [];
 	@observable categories = [];
@@ -33,7 +33,6 @@ class FormStore {
 				}
 				return item;
 			});
-			console.log(category.numOfItems);
 			return category;
 		});
 	}
@@ -80,7 +79,7 @@ class FormStore {
 	}
 }
 let formStore = new FormStore();
-getData.getItems(formStore);
-getData.getCategories(formStore);
+httpClient.getItems(formStore);
+httpClient.getCategories(formStore);
 
 export default formStore;
